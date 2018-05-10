@@ -3,8 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <AssemblyVersion>2018.5.10.0526</AssemblyVersion>
-    <FileVersion>2018.5.10.0526</FileVersion>
+    <AssemblyVersion>2018.5.10.0605</AssemblyVersion>
+    <FileVersion>2018.5.10.0605</FileVersion>
+    <Authors>Jonathan [Pwnoz0r] Rainier</Authors>
+    <Company>Initial Servers LLC.</Company>
+    <Description>A mindbogglingly simple integration of Discord and Zendesk (using Webhooks)</Description>
+    <PackageProjectUrl>https://github.com/Pwnoz0r/Discord.Zendesk</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Pwnoz0r/Discord.Zendesk</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/Pwnoz0r/Discord.Zendesk/blob/master/LICENSE</PackageLicenseUrl>
+    <Copyright>Jonathan [Pwnoz0r] Rainier © 2018</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
