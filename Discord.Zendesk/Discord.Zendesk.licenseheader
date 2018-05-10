@@ -1,0 +1,20 @@
+﻿extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+// Copyright (c) %CurrentYear% Initial Servers LLC. All rights reserved.
+// https://initialservers.com/
+
+extensions: .aspx .ascx
+<%-- 
+Copyright (c) %CurrentYear% Initial Servers LLC. All rights reserved.
+https://initialservers.com/
+--%>
+
+extensions: .vb
+' Copyright (c) %CurrentYear% Initial Servers LLC. All rights reserved.
+' https://initialservers.com/
+
+extensions:  .xml .config .xsd
+<!--
+Copyright (c) %CurrentYear% Initial Servers LLC. All rights reserved.
+https://initialservers.com/
+-->
