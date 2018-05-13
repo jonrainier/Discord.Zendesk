@@ -32,11 +32,11 @@ A mindbogglingly simple integration of Discord and Zendesk (using Webhooks)
 7. Give your trigger a name and a description.
 8. Under the section `Meet ANY of the following conditions` set the following options ![Zendesk Trigger Conditions](http://screenshots.initialservers.com/jrainier/4c05f66e8b729ea61baa72fcbcc6c23dd5ed.png)
 9. Under `Actions` select `Notify target` and then the name of your new trigger
-10. Set the JSON body to the following (ignore Zendesk if it notifies you of any string/integer errors):
+10. Set the JSON body to the following:
 ```javascript
 {
 	"status": "{{ticket.status}}",
-	"id": {{ticket.id}},
+	"id": "{{ticket.id}}",
 	"updated": "{{ticket.updated_at_with_timestamp}}",
 	"title": "{{ticket.title}}",
 	"requester": "{{ticket.requester.name}}",
