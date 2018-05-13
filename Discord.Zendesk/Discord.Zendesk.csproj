@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <AssemblyVersion>2018.5.10.0605</AssemblyVersion>
-    <FileVersion>2018.5.10.0605</FileVersion>
+    <AssemblyVersion>2018.5.13.2348</AssemblyVersion>
+    <FileVersion>2018.5.13.2348</FileVersion>
     <Authors>Jonathan [Pwnoz0r] Rainier</Authors>
     <Company>Initial Servers LLC.</Company>
     <Description>A mindbogglingly simple integration of Discord and Zendesk (using Webhooks)</Description>

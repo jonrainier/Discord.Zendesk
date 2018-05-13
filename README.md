@@ -34,6 +34,15 @@ A mindbogglingly simple integration of Discord and Zendesk (using Webhooks)
 9. Under `Actions` select `Notify target` and then the name of your new trigger
 10. Set the JSON body to the following (ignore Zendesk if it notifies you of any string/integer errors):
 ```javascript
-{"status": "{{ticket.status}}", "id": {{ticket.id}}, "updated": "{{ticket.updated_at_with_timestamp}}", "title": "{{ticket.title}}", "requester": "{{ticket.requester.name}}", "comment": "{{ticket.latest_comment}}", "sender": "{{current_user.name}}","url": "{{ticket.link}}"}
+{
+	"status": "{{ticket.status}}",
+	"id": {{ticket.id}},
+	"updated": "{{ticket.updated_at_with_timestamp}}",
+	"title": "{{ticket.title}}",
+	"requester": "{{ticket.requester.name}}",
+	"comment": "{{ticket.latest_comment}}",
+	"sender": "{{current_user.name}}",
+	"url": "{{ticket.link}}"
+}
 ```
 11. Click `Save`. Update or open a new ticket and check your support channel on Discord!

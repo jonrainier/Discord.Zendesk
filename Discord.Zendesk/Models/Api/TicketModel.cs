@@ -9,7 +9,7 @@ namespace Discord.Zendesk.Models.Api
     {
         public string Status { get; set; }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Title { get; set; }
 
