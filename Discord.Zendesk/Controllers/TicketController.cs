@@ -4,6 +4,7 @@
 using System;
 using System.ComponentModel;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Discord.Zendesk.Content;
 using Discord.Zendesk.Enums;
 using Discord.Zendesk.Extensions;
@@ -16,7 +17,7 @@ namespace Discord.Zendesk.Controllers
     public class TicketController : Controller
     {
         [HttpPost]
-        public async void Post([FromBody] TicketModel ticket)
+        public Task<HttpResponseMessage> Post([FromBody] TicketModel ticket)
         {
             var ticketStatus = Enum.Parse<ColorType>(ticket.Status);
             var content =
@@ -38,7 +39,7 @@ namespace Discord.Zendesk.Controllers
                     }
                 });
 
-            await new HttpClient().PostAsync(Program.Discord.WebHookUrl, content);
+            return new HttpClient().PostAsync(Startup.WebHookUrl, content);
         }
     }
 }

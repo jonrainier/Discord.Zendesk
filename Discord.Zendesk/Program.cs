@@ -1,15 +1,10 @@
 ﻿// Copyright (c) 2018 Initial Servers LLC. All rights reserved.
 // https://initialservers.com/
 
-using System;
-using System.IO;
+using System.Diagnostics;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
-using Discord.Zendesk.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -17,8 +12,6 @@ namespace Discord.Zendesk
 {
     public class Program
     {
-        public static DiscordModel Discord { get; set; }
-
         public static JsonSerializerSettings JsonSerializerSettings { get; set; } = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
@@ -27,54 +20,40 @@ namespace Discord.Zendesk
             ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
 
+        /// <summary>
+        ///     Main entry for the application
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args)
+        /// <summary>
+        ///     Builds an instance of the web host
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            return WebHost.CreateDefaultBuilder(args)
-                .UseKestrel(SetHost)
-                .UseStartup<Startup>()
-                .Build();
-        }
-
-        private static void SetHost(KestrelServerOptions options)
-        {
-            var configuration = (IConfiguration) options.ApplicationServices.GetService(typeof(IConfiguration));
-            var host = configuration.GetSection("WebHost").Get<HostModel>();
-
-            Discord = configuration.GetSection("Discord").Get<DiscordModel>();
-
-            foreach (var endpointKvp in host.Endpoints)
-            {
-                var endpointName = endpointKvp.Key;
-                var endpoint = endpointKvp.Value;
-                if (!endpoint.IsEnabled) continue;
-
-                var address = IPAddress.Parse(endpoint.Address);
-                options.Listen(address, endpoint.Port, opt =>
-                {
-                    if (endpoint.Certificate == null) return;
-
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), endpoint.Certificate.Path);
-                    var cert = new X509Certificate2(path, endpoint.Certificate.Password,
-                        X509KeyStorageFlags.MachineKeySet);
-
-                    switch (endpoint.Certificate.Source)
+            if (Debugger.IsAttached)
+                return WebHost.CreateDefaultBuilder(args)
+                    .UseKestrel(options =>
                     {
-                        case "File":
-                            opt.UseHttps(cert);
-                            break;
-                        default:
-                            throw new NotImplementedException(
-                                $"The source {endpoint.Certificate.Source} is not yet implemented");
-                    }
-                });
+                        options.Listen(IPAddress.Any, 80);
+                        options.Listen(IPAddress.Any, 443,
+                            listenOptions => { listenOptions.UseHttps(args[0]); });
+                    })
+                    .UseStartup<Startup>();
 
-                options.UseSystemd(); //?
-            }
+            if (args.Length == 0)
+                return WebHost.CreateDefaultBuilder(args)
+                    .UseUrls("http://0.0.0.0:5000")
+                    .UseStartup<Startup>();
+
+            return WebHost.CreateDefaultBuilder(args)
+                .UseUrls($"http://0.0.0.0:{args[0]}")
+                .UseStartup<Startup>();
         }
     }
 }

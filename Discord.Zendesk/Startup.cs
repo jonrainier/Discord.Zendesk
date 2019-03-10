@@ -1,15 +1,13 @@
 ﻿// Copyright (c) 2018 Initial Servers LLC. All rights reserved.
 // https://initialservers.com/
 
-using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -23,14 +21,21 @@ namespace Discord.Zendesk
         }
 
         public IConfiguration Configuration { get; }
-
-        private static string LetsEncryptDirectory { get; } =
-            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", @".well-known");
+        public static string WebHookUrl { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            WebHookUrl = Configuration["Discord:WebHookUrl"];
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials());
+            });
 
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddMvc().AddJsonOptions(options =>
@@ -43,29 +48,34 @@ namespace Discord.Zendesk
                     CamelCaseText = true
                 });
             });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (!Directory.Exists(LetsEncryptDirectory))
-                Directory.CreateDirectory(LetsEncryptDirectory);
-
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseStaticFiles(new StaticFileOptions
+            app.UseMvc(routes =>
             {
-                FileProvider = new PhysicalFileProvider(LetsEncryptDirectory),
-                RequestPath = new PathString("/.well-known"),
-                ServeUnknownFileTypes = true // serve extensionless file
+                routes.MapRoute(
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
             });
-
-            app.UseMvc();
         }
     }
 }
