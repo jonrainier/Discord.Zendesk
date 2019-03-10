@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2018 Initial Servers LLC. All rights reserved.
+﻿// Copyright (c) 2019 Initial Servers LLC. All rights reserved.
 // https://initialservers.com/
 
 using System.Net.Http;

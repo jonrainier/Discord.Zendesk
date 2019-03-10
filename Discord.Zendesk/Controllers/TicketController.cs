@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2018 Initial Servers LLC. All rights reserved.
+﻿// Copyright (c) 2019 Initial Servers LLC. All rights reserved.
 // https://initialservers.com/
 
 using System;
@@ -29,7 +29,8 @@ namespace Discord.Zendesk.Controllers
                         {
                             title = $"{ticket.Title}",
                             type = "rich",
-                            color = Convert.ToInt32(ticketStatus.GetAttributeOfType<DescriptionAttribute>().Description, 16),
+                            color = Convert.ToInt32(ticketStatus.GetAttributeOfType<DescriptionAttribute>().Description,
+                                16),
                             description = $"[Ticket #{ticket.Id} - {ticketStatus}]({ticket.Url})\r\n{ticket.Comment}",
                             footer = new
                             {
