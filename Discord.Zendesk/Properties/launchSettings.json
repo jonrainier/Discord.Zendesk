@@ -2,7 +2,7 @@
   "profiles": {
     "Discord.Zendesk": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\ProgramData\\Certify\\certes\\assets\\pfx\\8f152818-05a9-4316-8f42-76de644af620.pfx",
+      "commandLineArgs": "PATH_TO_PFX (FOR DEVELOPMENT ONLY)",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
