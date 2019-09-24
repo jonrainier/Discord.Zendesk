@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <AssemblyVersion>2019.3.10.0224</AssemblyVersion>
-    <FileVersion>2019.3.10.0224</FileVersion>
+    <AssemblyVersion>2019.9.24.1446</AssemblyVersion>
+    <FileVersion>2019.9.24.1446</FileVersion>
     <Authors>Jonathan [Pwnoz0r] Rainier</Authors>
     <Company>Initial Servers LLC.</Company>
     <Description>A mindbogglingly simple integration of Discord and Zendesk (using Webhooks)</Description>
@@ -20,11 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
   </ItemGroup>
 
 </Project>

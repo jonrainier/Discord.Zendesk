@@ -34,7 +34,7 @@ namespace Discord.Zendesk.Controllers
                             description = $"[Ticket #{ticket.Id} - {ticketStatus}]({ticket.Url})\r\n{ticket.Comment}",
                             footer = new
                             {
-                                text = $"Updated at {ticket.Updated:G} by {ticket.Sender}"
+                                text = $"Updated at {ticket.Updated.ToLocalTime():G} by {ticket.Sender}"
                             }
                         }
                     }

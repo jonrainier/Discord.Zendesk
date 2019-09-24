@@ -10,6 +10,7 @@ namespace Discord.Zendesk.Enums
         [Description("59BBE0")] Pending,
         [Description("F5CA00")] New,
         [Description("E82A2A")] Open,
-        [Description("828282")] Solved
+        [Description("828282")] Solved,
+        [Description("000000")] Closed
     }
 }

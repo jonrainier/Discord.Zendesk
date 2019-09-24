@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using Microsoft.Extensions.Hosting;
 
 namespace Discord.Zendesk
 {
@@ -37,23 +36,15 @@ namespace Discord.Zendesk
                         .AllowCredentials());
             });
 
+            services.AddControllers().AddNewtonsoftJson();
+
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-            services.AddMvc().AddJsonOptions(options =>
-            {
-                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Include;
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                options.SerializerSettings.Converters.Add(new StringEnumConverter
-                {
-                    CamelCaseText = true
-                });
-            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -65,14 +56,16 @@ namespace Discord.Zendesk
                 app.UseHsts();
             }
 
+            app.UseRouting();
+
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
             });
